@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.XR.ARFoundation;
 
 public class GetCurrentPos : MonoBehaviour
 {
-
+    [SerializeField] ARTrackedImageManager m_TrackedImageManager;
     [SerializeField] private TextMeshProUGUI positionOutput;
     [SerializeField] private TMP_Dropdown selectNode;
     [SerializeField] private Transform userCamera;
@@ -42,5 +43,24 @@ public class GetCurrentPos : MonoBehaviour
     {
         if (pointer >= nodes.Count) return;
         pointer = newPointer;
+    }
+
+    void OnImageChanged(ARTrackablesChangedEventArgs<ARTrackedImage> eventArgs)
+    {
+        Debug.Log($"There are {m_TrackedImageManager.trackables.count} images being tracked.");
+        foreach (var newImage in eventArgs.added)
+        {
+            Debug.Log($"Detected: {newImage.referenceImage.name}");
+        }
+
+        foreach (var updatedImage in eventArgs.updated)
+        {
+            // Handle updated event
+        }
+
+        foreach (var removedImage in eventArgs.removed)
+        {
+            // Handle removed event
+        }
     }
 }
