@@ -10,7 +10,16 @@ class Node
 		Name = name;
 		ConnectedNodes = connectedNodes;
 	}
+    public Node(string name)
+    {
+        Name = name;
+        ConnectedNodes = new List<NodeConnection>();
+    }
+    public void AddConnection(string to, List<float> relativePositions)
+	{
+		ConnectedNodes.Add(new NodeConnection(to, relativePositions));
 
-	string Name { get; set; }
+    }
+	public string Name { get; private set; }
 	List<NodeConnection> ConnectedNodes { get; set; }
 }
