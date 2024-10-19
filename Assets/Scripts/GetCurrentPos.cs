@@ -14,12 +14,13 @@ public class GetCurrentPos : MonoBehaviour
     [SerializeField] private int pointer = 0;
     [SerializeField] private List<Node> nodes = new List<Node>();
 
+    [SerializeField] private TextMeshProUGUI relativePositionOutput;
+    [SerializeField] private GameObject measurePoint;
+    private Vector3 relativePoint = Vector3.zero;
+
     private void Start()
     {
-        nodes.Add(new Node("test 1"));
-        nodes.Add(new Node("test 2"));
-        nodes.Add(new Node("test 3"));
-
+        //read nodes from XMLParser
         List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
         foreach (Node n in nodes) 
         {
@@ -28,12 +29,28 @@ public class GetCurrentPos : MonoBehaviour
         selectNode.AddOptions(options);
     }
 
-    public void DisplayCurrentPosition()
+    private void Update()
+    {
+        //Measure part
+        Vector3 relPos = relativePoint - userCamera.position;
+        relativePositionOutput.SetText($"{relPos.x} \n {relPos.y} \n {relPos.z}");
+    }
+
+    public void AddConnectionToSeletedNode()
     {
         if(pointer>=nodes.Count)return;
 
         positionOutput.SetText($"{newNodeName} \n {userCamera.position.x} \n {userCamera.position.y} \n {userCamera.position.z}");
         nodes[pointer].AddConnection(newNodeName,new List<float> { userCamera.position.x , userCamera.position.y , userCamera.position.z });
+    }
+    public void AddNewNode()
+    {
+        Node newNode = new Node("New Node");
+        nodes.Add(newNode);
+
+        List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
+        options.Add(new TMP_Dropdown.OptionData(newNode.Name));
+        selectNode.AddOptions(options);
     }
     public void OnNameChanged(string newName)
     {
@@ -44,23 +61,21 @@ public class GetCurrentPos : MonoBehaviour
         if (pointer >= nodes.Count) return;
         pointer = newPointer;
     }
+    public void ResetRelativePos()
+    {
+        relativePoint = userCamera.position;
+        if (measurePoint != null) 
+        {
+            measurePoint.SetActive(true);
+            measurePoint.transform.position = relativePoint;
+        } 
+    }
 
     void OnImageChanged(ARTrackablesChangedEventArgs<ARTrackedImage> eventArgs)
     {
-        Debug.Log($"There are {m_TrackedImageManager.trackables.count} images being tracked.");
         foreach (var newImage in eventArgs.added)
         {
             Debug.Log($"Detected: {newImage.referenceImage.name}");
         }
-
-        foreach (var updatedImage in eventArgs.updated)
-        {
-            // Handle updated event
-        }
-
-        foreach (var removedImage in eventArgs.removed)
-        {
-            // Handle removed event
-        }
-    }
+    }  
 }
