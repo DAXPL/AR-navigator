@@ -37,8 +37,8 @@ class NodeConnection
 	//}
 	float calculateDistance()
 	{
-		float distance = (float)Math.Sqrt(RelativePosition.X * RelativePosition.X + RelativePosition.Y * RelativePosition.Y);
-		distance = (float)Math.Sqrt(distance * distance + RelativePosition.Z * RelativePosition.Z);
+		float distance = (float)Math.Sqrt(RelativePosition.x * RelativePosition.x + RelativePosition.y * RelativePosition.y);
+		distance = (float)Math.Sqrt(distance * distance + RelativePosition.z * RelativePosition.z);
 		return distance;
 	}
 }

@@ -26,6 +26,6 @@ class Node
 		ConnectedNodes.Add(new NodeConnection(to, relativePosition));
 	}
 
-	string Name { get; private set; }
+	public string Name { get; private set; }
 	List<NodeConnection> ConnectedNodes { get; set; }
 }
