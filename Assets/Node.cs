@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 class Node
 {
 	Node() { }
@@ -10,6 +11,7 @@ class Node
 		Name = name;
 		ConnectedNodes = connectedNodes;
 	}
+  
 	public Node(string name)
 	{
 		Name = name;
