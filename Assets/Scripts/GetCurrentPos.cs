@@ -41,7 +41,7 @@ public class GetCurrentPos : MonoBehaviour
         if(pointer>=nodes.Count)return;
 
         positionOutput.SetText($"{newNodeName} \n {userCamera.position.x} \n {userCamera.position.y} \n {userCamera.position.z}");
-        nodes[pointer].AddConnection(newNodeName,new List<float> { userCamera.position.x , userCamera.position.y , userCamera.position.z });
+        nodes[pointer].AddConnection(newNodeName,new Vector3( userCamera.position.x , userCamera.position.y , userCamera.position.z ));
     }
     public void AddNewNode()
     {

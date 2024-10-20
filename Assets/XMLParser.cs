@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using UnityEngine;
 
 class XMLParser
@@ -28,14 +29,6 @@ class XMLParser
 			{
 				string to = nodeConnection.Element((XName)"to").Value.ToString().Trim();
 
-				//List<float> relativePositions = new List<float>();
-				//relativePositions.Add(float.Parse(nodeConnection.Element((XName)"relative_x").Value));
-				//relativePositions.Add(float.Parse(nodeConnection.Element((XName)"relative_y").Value));
-				//relativePositions.Add(float.Parse(nodeConnection.Element((XName)"relative_z").Value));
-
-				//Add connection to connections list
-				//nodeConnections.Add(new NodeConnection(to, relativePositions));
-
 				//Relative position of connected node 
 				float x = float.Parse(nodeConnection.Element((XName)"relative_x").Value);
 				float y = float.Parse(nodeConnection.Element((XName)"relative_y").Value);
@@ -49,6 +42,19 @@ class XMLParser
 
 			//Add node to node list
 			NodeList.Add(new Node(name, nodeConnections));
+		}
+	}
+
+	public static void ToXmlFile(object obj, string filePath)
+	{
+		var xs = new XmlSerializer(obj.GetType());
+		var ns = new XmlSerializerNamespaces();
+		var ws = new XmlWriterSettings { Indent = true, NewLineOnAttributes = false, OmitXmlDeclaration = true };
+		ns.Add("", "");
+
+		using (XmlWriter writer = XmlWriter.Create(filePath, ws))
+		{
+			xs.Serialize(writer, obj, ns);
 		}
 	}
 }
