@@ -11,16 +11,23 @@ class Node
 		Name = name;
 		ConnectedNodes = connectedNodes;
 	}
-    public Node(string name)
-    {
-        Name = name;
-        ConnectedNodes = new List<NodeConnection>();
-    }
-    public void AddConnection(string to, List<float> relativePositions)
+  
+	public Node(string name)
 	{
-		ConnectedNodes.Add(new NodeConnection(to, relativePositions));
+		Name = name;
+		ConnectedNodes = new List<NodeConnection>();
+	}
 
-    }
+	//public void AddConnection(string to, List<float> relativePositions)
+	//{
+	//	ConnectedNodes.Add(new NodeConnection(to, relativePositions));
+	//}
+
+	public void AddConnection(string to, Vector3 relativePosition)
+	{
+		ConnectedNodes.Add(new NodeConnection(to, relativePosition));
+	}
+
 	public string Name { get; private set; }
 	List<NodeConnection> ConnectedNodes { get; set; }
 }

@@ -28,13 +28,21 @@ class XMLParser
 			{
 				string to = nodeConnection.Element((XName)"to").Value.ToString().Trim();
 
-				List<float> relativePositions = new List<float>();
-				relativePositions.Add(float.Parse(nodeConnection.Element((XName)"relative_x").Value));
-				relativePositions.Add(float.Parse(nodeConnection.Element((XName)"relative_y").Value));
-				relativePositions.Add(float.Parse(nodeConnection.Element((XName)"relative_z").Value));
+				//List<float> relativePositions = new List<float>();
+				//relativePositions.Add(float.Parse(nodeConnection.Element((XName)"relative_x").Value));
+				//relativePositions.Add(float.Parse(nodeConnection.Element((XName)"relative_y").Value));
+				//relativePositions.Add(float.Parse(nodeConnection.Element((XName)"relative_z").Value));
 
 				//Add connection to connections list
-				nodeConnections.Add(new NodeConnection(to, relativePositions));
+				//nodeConnections.Add(new NodeConnection(to, relativePositions));
+
+				//Relative position of connected node 
+				float x = float.Parse(nodeConnection.Element((XName)"relative_x").Value);
+				float y = float.Parse(nodeConnection.Element((XName)"relative_y").Value);
+				float z = float.Parse(nodeConnection.Element((XName)"relative_z").Value);
+				Vector3 relativePosition = new Vector3(x, y, z);
+
+				nodeConnections.Add(new NodeConnection(to, relativePosition));
 			}
 
 			string name = node.Element((XName)"name").Value.ToString().Trim();
