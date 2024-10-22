@@ -14,10 +14,24 @@ class XMLParser
 
 	public List<Node> NodeList { get; set; }
 
-	public void ParseXML(string _xmlFilePath)
+	public void ParseXML(string _xmlFilePath, XDocument documentToParse=null)
 	{
 		NodeList.Clear();
-		XDocument xmlDoc = XDocument.Load(_xmlFilePath);
+		XDocument xmlDoc;
+        if (documentToParse != null) 
+		{
+			xmlDoc = documentToParse;
+		}
+		else
+		{
+			xmlDoc = XDocument.Load(_xmlFilePath);
+        }
+		 
+		if(xmlDoc == null)
+		{
+			Debug.LogWarning($"No XML given!");
+			return;
+		}
 
 		//Foreach node
 		foreach (var node in xmlDoc.Descendants("Node"))

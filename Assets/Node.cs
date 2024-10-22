@@ -20,6 +20,7 @@ public class Node
 
 	public string Name { get; private set; }
 	public List<NodeConnection> ConnectedNodes { get; set; }
+	public bool isTracked = false;
 
 	public void AddConnection(string to, Vector3 relativePosition)
 	{ ConnectedNodes.Add(new NodeConnection(to, relativePosition)); }
