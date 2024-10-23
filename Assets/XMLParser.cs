@@ -5,7 +5,7 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using UnityEngine;
 
-class XMLParser
+public class XMLParser
 {
 	public XMLParser()
 	{
