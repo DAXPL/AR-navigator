@@ -35,7 +35,7 @@ public class EditNode : MonoBehaviour
         newNodeName = newName;
     }
 
-    void OnImageChanged(ARTrackablesChangedEventArgs<ARTrackedImage> eventArgs)
+    public void OnImageChanged(ARTrackablesChangedEventArgs<ARTrackedImage> eventArgs)
     {
         XMLParser parser = MeasureManger.parser;
         if (parser == null) return;

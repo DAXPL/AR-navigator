@@ -9,6 +9,7 @@ using UnityEngine.XR.ARFoundation;
 public class MeasureManger : MonoBehaviour
 {
     public static XMLParser parser;
+    [SerializeField] private string dataPath = $"{Application.persistentDataPath}/Uninav/data.xml";
     [SerializeField] private TextMeshProUGUI nodesOutput;
 
     void Start()
@@ -34,4 +35,13 @@ public class MeasureManger : MonoBehaviour
         }
     }
 
+    public void LoadXML()
+    {
+        parser.ParseXML(dataPath);
+    }
+
+    public void SaveXML()
+    {
+        XMLParser.ToXmlFile(parser.NodeList, dataPath);
+    }
 }
