@@ -9,14 +9,14 @@ class XMLParser
 {
 	public XMLParser()
 	{
-		NodeList = new List<Node>();
+		Nodes = new NodeList();
 	}
 
-	public List<Node> NodeList { get; set; }
+	public NodeList Nodes { get; set; }
 
 	public void ParseXML(string _xmlFilePath)
 	{
-		NodeList.Clear();
+		Nodes = new NodeList();
 		XDocument xmlDoc = XDocument.Load(_xmlFilePath);
 
 		//Foreach node
@@ -41,7 +41,7 @@ class XMLParser
 			string name = node.Element((XName)"Name").Value.ToString().Trim();
 
 			//Add node to node list
-			NodeList.Add(new Node(name, nodeConnections));
+			Nodes.Add(new Node(name, nodeConnections));
 		}
 	}
 
