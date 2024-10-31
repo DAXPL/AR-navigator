@@ -18,7 +18,7 @@ public class Node
 		ConnectedNodes = connectedNodes;
 	}
 
-	public string Name { get; private set; }
+	public string Name;
 	public List<NodeConnection> ConnectedNodes { get; set; }
 	public bool isTracked = false;
 

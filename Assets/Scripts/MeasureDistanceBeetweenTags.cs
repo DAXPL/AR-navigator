@@ -42,7 +42,12 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
     private void UpdateNodesReferences(ReadOnlyList<ARTrackedImage> images, bool first = false)
     {
         XMLParser parser = MeasureManger.parser;
-        if (parser == null) return;
+        if (parser == null) 
+        {
+            referenceNodeText.SetText("No parser!");
+            targetNodeText.SetText("No parser!");
+            return;
+        } 
 
         foreach (var newImage in images)
         {
@@ -101,7 +106,7 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
         referenceNodeText.SetText(referenceNode != null ? referenceNode.Name : "No ref node");
         targetNodeText.SetText(targetNode != null ? targetNode.Name : "No target node");
 
-        float dist = referenceNodeText != null && targetNode != null ? Vector3.Distance(startIndicator.transform.position, endIndicator.transform.position) : 0;
+        float dist = (referenceNodeText != null && targetNode != null) ? Vector3.Distance(startIndicator.transform.position, endIndicator.transform.position) : 0;
         distanceText.SetText($"{dist}m");
     }
 
