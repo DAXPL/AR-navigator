@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Tutorials.Core.Editor;
 using Unity.XR.CoreUtils.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,8 +10,8 @@ using UnityEngine.XR.ARFoundation;
 public class MeasureDistanceBeetweenTags : MonoBehaviour
 {
     [SerializeField] ARTrackedImageManager m_TrackedImageManager;
-    private Node referenceNode;
-    private Node targetNode;
+    private string referenceNode="";
+    private string targetNode="";
 
     [SerializeField] private GameObject startIndicator;
     [SerializeField] private GameObject endIndicator;
@@ -22,100 +23,131 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
     [SerializeField] private TextMeshProUGUI distanceText;
     [SerializeField] private TextMeshProUGUI lockButtonText;
 
+    [SerializeField] private TextMeshProUGUI imagesText;
+
     private bool referenceLocked = false;
 
     private void OnEnable()
     {
         referenceLocked = false;
-        referenceNode = null;
-        targetNode = null;
+        referenceNode = "";
+        targetNode = "";
+
         startIndicator.SetActive(false);
         endIndicator.SetActive(false);
     }
 
     public void OnImageChanged(ARTrackablesChangedEventArgs<ARTrackedImage> eventArgs)
     {
-        UpdateNodesReferences(eventArgs.added, true);
+        UpdateNodesReferences(eventArgs.added);
         UpdateNodesReferences(eventArgs.updated);
     }
 
     private void UpdateNodesReferences(ReadOnlyList<ARTrackedImage> images, bool first = false)
     {
-        XMLParser parser = MeasureManger.parser;
-        if (parser == null) 
-        {
-            referenceNodeText.SetText("No parser!");
-            targetNodeText.SetText("No parser!");
-            return;
-        } 
+        // Reset referenceNode if it's not locked
+        if (!referenceLocked) referenceNode = null;
+        targetNode=null;
+        imagesText.SetText("");
 
         foreach (var newImage in images)
         {
-            for (int i = 0; i < parser.NodeList.Count; i++)
+            string imageName = newImage.referenceImage.name;
+            imagesText.text += $"{imageName} | {newImage.trackingState}\n";
+
+            // Continue only if the image is being tracked
+            if (newImage.trackingState != UnityEngine.XR.ARSubsystems.TrackingState.Tracking) continue;
+
+            if (!referenceLocked)
             {
-                Node node = parser.NodeList[i];
-                if (node.Name == newImage.referenceImage.name)
+                // Set the reference node if not locked
+                if (referenceNode == null || referenceNode == "")
                 {
-                    if (referenceLocked == false)
-                    {
-                        referenceNode = node;
-                        startIndicator.SetActive(true);
-                        startIndicator.transform.position = newImage.transform.position;
-                        return;
-                    }
-                    else if (targetNode != node)
-                    {
-                        targetNode = node;
-                        endIndicator.SetActive(true);
-                        endIndicator.transform.position = newImage.transform.position;
-                        return;
-                    }
-                    else
-                    {
-                        targetNode = null;
-                        endIndicator.SetActive(true);
-                        return;
-                    }
+                    referenceNode = imageName;
+                    startIndicator.transform.position = newImage.transform.position;
+                    startIndicator.SetActive(true);
                 }
             }
-            if (first == true && referenceNode == null)
+            else if (targetNode != imageName)
             {
-                parser.NodeList.Add(new Node(newImage.referenceImage.name));
-                referenceNode = parser.NodeList[parser.NodeList.Count - 1];
+                if(imageName == referenceNode) return;
+                // Set the target node if reference is locked
+                targetNode = imageName;
+                endIndicator.transform.position = newImage.transform.position;
+                endIndicator.SetActive(true);
             }
-
         }
     }
 
     public void ToggleLock()
     {
         referenceLocked = !referenceLocked;
-        lockButtonText.SetText(referenceLocked ? $"Unlock" : $"Lock");
-        if (referenceLocked == false)
+        lockButtonText.SetText(referenceLocked ? "Unlock" : "Lock");
+
+        if (!referenceLocked)
         {
-            targetNode = null;
-            startIndicator.SetActive(false);
+            targetNode = "";
+            endIndicator.SetActive(false);
+        }
+        else
+        {
+            startIndicator.SetActive(true);
             endIndicator.SetActive(false);
         }
     }
 
     private void Update()
     {
-        saveButton.interactable = (referenceNode != null && targetNode != null);
+        saveButton.interactable = (!string.IsNullOrEmpty(referenceNode) && !string.IsNullOrEmpty(targetNode));
 
-        referenceNodeText.SetText(referenceNode != null ? referenceNode.Name : "No ref node");
-        targetNodeText.SetText(targetNode != null ? targetNode.Name : "No target node");
+        XMLParser parser = MeasureManger.parser;
+        if (parser == null) return;
 
-        float dist = (referenceNodeText != null && targetNode != null) ? Vector3.Distance(startIndicator.transform.position, endIndicator.transform.position) : 0;
-        distanceText.SetText($"{dist}m");
+        startIndicator.SetActive(!string.IsNullOrEmpty(referenceNode));
+        endIndicator.SetActive(!string.IsNullOrEmpty(targetNode));
+
+        referenceNodeText.SetText(!string.IsNullOrEmpty(referenceNode) ? referenceNode : "No ref node");
+        targetNodeText.SetText(!string.IsNullOrEmpty(targetNode) ? targetNode : "No target node");
+
+        float dist = (!string.IsNullOrEmpty(referenceNode) && !string.IsNullOrEmpty(targetNode))
+            ? Vector3.Distance(startIndicator.transform.position, endIndicator.transform.position)
+            : 0;
+
+        distanceText.SetText($"{dist:F2}m");
     }
 
     public void SaveConnection()
     {
-        if (referenceNode == null || targetNode == null) return;
+        if(referenceNode.IsNullOrEmpty() || targetNode.IsNullOrEmpty())return;
+        XMLParser parser = MeasureManger.parser;
+        if (parser == null) return;
 
-        referenceNode.AddConnection(targetNode.Name, endIndicator.transform.position - startIndicator.transform.position);
-        targetNode.AddConnection(referenceNode.Name, startIndicator.transform.position - endIndicator.transform.position);
+
+        Node start = null;
+        Node end = null;
+        for (int i = 0; i < parser.NodeList.Count; i++) 
+        {
+            Node node = parser.NodeList[i];
+            if(node.Name == referenceNode) start = node;
+            if(node.Name == targetNode) end = node;
+            if (start != null && end != null) break; 
+        }
+
+        if(start == null)
+        {
+            parser.NodeList.Add(new Node(referenceNode));
+            start = parser.NodeList[parser.NodeList.Count - 1];
+        }
+        if (end == null) 
+        {
+            parser.NodeList.Add(new Node(targetNode));
+            end = parser.NodeList[parser.NodeList.Count - 1];
+        }
+
+        if(start == null || end == null) return;
+
+        start.AddConnection(targetNode, endIndicator.transform.position - startIndicator.transform.position);
+        end.AddConnection(referenceNode, startIndicator.transform.position - endIndicator.transform.position);
 
     }
 }

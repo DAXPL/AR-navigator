@@ -9,12 +9,13 @@ using UnityEngine.XR.ARFoundation;
 public class MeasureManger : MonoBehaviour
 {
     public static XMLParser parser;
-    [SerializeField] private string dataPath;
+    private string dataPath;
     [SerializeField] private TextMeshProUGUI nodesOutput;
 
     void Start()
     {
         dataPath = $"{Application.persistentDataPath}/data.xml";
+        Debug.Log(dataPath);
         parser = new XMLParser();
     }
 
