@@ -45,6 +45,7 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
 
     private void UpdateNodesReferences(ReadOnlyList<ARTrackedImage> images, bool first = false)
     {
+        if(!this.isActiveAndEnabled) return;
         // Reset referenceNode if it's not locked
         if (!referenceLocked) referenceNode = null;
         targetNode=null;

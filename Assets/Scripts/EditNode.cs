@@ -1,4 +1,6 @@
+using System;
 using TMPro;
+using Unity.XR.CoreUtils.Collections;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 
@@ -14,6 +16,11 @@ public class EditNode : MonoBehaviour
     private Vector3 relativePoint = Vector3.zero;
     Vector3 relPos = Vector3.zero;//relative position
 
+    private void OnEnable()
+    {
+        pointer = 0;
+    }
+   
     private void Update()
     {
         relPos = relativePoint - userCamera.position;
@@ -37,38 +44,27 @@ public class EditNode : MonoBehaviour
 
     public void OnImageChanged(ARTrackablesChangedEventArgs<ARTrackedImage> eventArgs)
     {
+
+        UpdateNodesReferences(eventArgs.added);
+        UpdateNodesReferences(eventArgs.updated);
+    }
+   
+    private void UpdateNodesReferences(ReadOnlyList<ARTrackedImage> images, bool first = false)
+    {
         XMLParser parser = MeasureManger.parser;
         if (parser == null) return;
 
-        foreach (var image in eventArgs.updated)
+        foreach (var image in images)
         {
-            int c = 0;
-            foreach (Node node in parser.NodeList)
+            for (int i=0;i< parser.NodeList.Count;i++)
             {
-                if (node.Name == image.referenceImage.name)
-                {
-                    pointer = c;
-                    currentNodeText.SetText($"Node: {parser.NodeList[pointer].Name} | {image.transform.position}");
-                    relativePoint = image.transform.position;
-                    break;
-                }
-                c++;
-            }
-        }
+                Node node = parser.NodeList[i];
+                if (node.Name != image.referenceImage.name) continue;
 
-        foreach (var newImage in eventArgs.added)
-        {
-            int c = 0;
-            foreach (Node node in parser.NodeList)
-            {
-                if (node.Name == newImage.referenceImage.name)
-                {
-                    pointer = c;
-                    currentNodeText.SetText($"Node: {parser.NodeList[pointer].Name} | {newImage.transform.position}");
-                    relativePoint = newImage.transform.position;
-                    break;
-                }
-                c++;
+                pointer = i;
+                currentNodeText.SetText($"Node: {parser.NodeList[pointer].Name} | {image.transform.position}");
+                relativePoint = image.transform.position;
+                break;
             }
         }
     }
