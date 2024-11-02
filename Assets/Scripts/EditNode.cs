@@ -7,6 +7,7 @@ using UnityEngine.XR.ARFoundation;
 public class EditNode : MonoBehaviour
 {
     [SerializeField] ARTrackedImageManager m_TrackedImageManager;
+    [SerializeField] TMP_InputField nameInput;
     [SerializeField] private TextMeshProUGUI positionText;
     [SerializeField] private TextMeshProUGUI currentNodeText;
     [SerializeField] private Transform userCamera;
@@ -33,8 +34,11 @@ public class EditNode : MonoBehaviour
         if (parser == null) return;
 
         if (pointer >= parser.NodeList.Count) return;
-        relPos = relativePoint - userCamera.position;
+        relPos =  userCamera.position - relativePoint;
         parser.NodeList[pointer].AddConnection(newNodeName, new Vector3(relPos.x, relPos.y, relPos.z));
+
+        nameInput.Select();
+        nameInput.text = "";
     }
 
     public void OnNameChanged(string newName)

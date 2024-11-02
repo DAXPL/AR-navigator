@@ -44,9 +44,9 @@ public class XMLParser
 				string to = nodeConnection.Element((XName)"To").Value.ToString().Trim();
 
 				//Relative position of connected node 
-				float x = float.Parse(nodeConnection.Element((XName)"Relative_x").Value);
-				float y = float.Parse(nodeConnection.Element((XName)"Relative_y").Value);
-				float z = float.Parse(nodeConnection.Element((XName)"Relative_z").Value);
+				float x = float.Parse(nodeConnection.Element((XName)"Relative_x").Value.Replace('.',','));
+				float y = float.Parse(nodeConnection.Element((XName)"Relative_y").Value.Replace('.', ','));
+				float z = float.Parse(nodeConnection.Element((XName)"Relative_z").Value.Replace('.', ','));
 				Vector3 relativePosition = new Vector3(x, y, z);
 
 				nodeConnections.Add(new NodeConnection(to, relativePosition));

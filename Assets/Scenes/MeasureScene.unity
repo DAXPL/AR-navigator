@@ -2103,6 +2103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TrackedImageManager: {fileID: 2512387470422636670}
+  nameInput: {fileID: 563269837}
   positionText: {fileID: 779480713}
   currentNodeText: {fileID: 238510821}
   userCamera: {fileID: 2512387468973847774}
