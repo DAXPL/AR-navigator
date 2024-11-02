@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
-using Unity.Tutorials.Core.Editor;
 using Unity.XR.CoreUtils.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -119,7 +118,7 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
 
     public void SaveConnection()
     {
-        if(referenceNode.IsNullOrEmpty() || targetNode.IsNullOrEmpty())return;
+        if(string.IsNullOrEmpty(referenceNode) || string.IsNullOrEmpty(targetNode))return;
         XMLParser parser = MeasureManger.parser;
         if (parser == null) return;
 
