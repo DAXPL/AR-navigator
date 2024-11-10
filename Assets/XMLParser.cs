@@ -14,20 +14,20 @@ public class XMLParser
 
 	public List<Node> NodeList { get; set; }
 
-	public void ParseXML(string _xmlFilePath, XDocument documentToParse=null)
+	public void ParseXML(string _xmlFilePath, XDocument documentToParse = null)
 	{
 		NodeList.Clear();
 		XDocument xmlDoc;
-        if (documentToParse != null) 
+		if (documentToParse != null)
 		{
 			xmlDoc = documentToParse;
 		}
 		else
 		{
 			xmlDoc = XDocument.Load(_xmlFilePath);
-        }
-		 
-		if(xmlDoc == null)
+		}
+
+		if (xmlDoc == null)
 		{
 			Debug.LogWarning($"No XML given!");
 			return;
@@ -44,7 +44,7 @@ public class XMLParser
 				string to = nodeConnection.Element((XName)"To").Value.ToString().Trim();
 
 				//Relative position of connected node 
-				float x = float.Parse(nodeConnection.Element((XName)"Relative_x").Value.Replace('.',','));
+				float x = float.Parse(nodeConnection.Element((XName)"Relative_x").Value.Replace('.', ','));
 				float y = float.Parse(nodeConnection.Element((XName)"Relative_y").Value.Replace('.', ','));
 				float z = float.Parse(nodeConnection.Element((XName)"Relative_z").Value.Replace('.', ','));
 				Vector3 relativePosition = new Vector3(x, y, z);
@@ -53,9 +53,15 @@ public class XMLParser
 			}
 
 			string name = node.Element((XName)"Name").Value.ToString().Trim();
+			int tagId = 0;
+
+			if (node.Element((XName)"TagId") != null)
+			{
+				int.TryParse(node.Element((XName)"TagId").Value.ToString().Trim(), out tagId);
+			}
 
 			//Add node to node list
-			NodeList.Add(new Node(name, nodeConnections));
+			NodeList.Add(new Node(tagId, name, nodeConnections));
 		}
 	}
 
