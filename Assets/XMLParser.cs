@@ -53,11 +53,11 @@ public class XMLParser
 			}
 
 			string name = node.Element((XName)"Name").Value.ToString().Trim();
-			int tagId = 0;
+			string tagId = "0";
 
 			if (node.Element((XName)"TagId") != null)
 			{
-				int.TryParse(node.Element((XName)"TagId").Value.ToString().Trim(), out tagId);
+				tagId = node.Element((XName)"TagId").Value.ToString();
 			}
 
 			//Add node to node list

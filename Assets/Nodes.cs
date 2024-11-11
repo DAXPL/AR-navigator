@@ -61,15 +61,21 @@ public class Node
 		Name = name;
 		ConnectedNodes = new List<NodeConnection>();
 	}
+    public Node(string name, string tagId)
+    {
+        Name = name;
+        TagId = tagId;
+        ConnectedNodes = new List<NodeConnection>();
+    }
 
-	public Node(int tagId, string name, List<NodeConnection> connectedNodes)
+    public Node(string tagId, string name, List<NodeConnection> connectedNodes)
 	{
 		TagId = tagId;
 		Name = name;
 		ConnectedNodes = connectedNodes;
 	}
 
-	public int TagId { get; set; }
+	public string TagId { get; set; }
 	public string Name { get; private set; }
 	public List<NodeConnection> ConnectedNodes { get; set; }
 	public bool isTracked = false;
