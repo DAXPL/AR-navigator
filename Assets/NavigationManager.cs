@@ -6,8 +6,13 @@ using UnityEngine.XR.ARFoundation;
 
 public class NavigationManager : MonoBehaviour
 {
-    private XMLParser xmlParser;
+    public static NavigationManager Instance;
+    public XMLParser xmlParser;
     private string dataPath ="";
+    private void Awake()
+    {
+        if(Instance == null) Instance = this;
+    }
     private void Start()
     {
         dataPath = $"{Application.persistentDataPath}/data.xml";
@@ -27,13 +32,12 @@ public class NavigationManager : MonoBehaviour
             if (image.trackingState != UnityEngine.XR.ARSubsystems.TrackingState.Tracking) continue;
 
             // ZnajdŸ aktualny wêze³ na podstawie nazwy obrazu
-            Node currentNode = xmlParser.NodeList.FirstOrDefault(n => n.Name == image.referenceImage.name);
+            Node currentNode = xmlParser.NodeList.FirstOrDefault(n => n.TagId == image.referenceImage.name);
             if (currentNode == null) continue;
 
             // Pozycja g³ównego wêz³a
             Vector3 currentPosition = image.transform.position;
 
-            // PrzejdŸ przez po³¹czone wêz³y
             foreach (NodeConnection connection in currentNode.ConnectedNodes)
             {
                 // Oblicz wzglêdn¹ pozycjê po³¹czonego wêz³a (podwêz³a) w przestrzeni AR
@@ -43,14 +47,18 @@ public class NavigationManager : MonoBehaviour
                 // SprawdŸ, czy po³¹czony wêze³ istnieje w `NodeList` jako g³ówny wêze³
                 bool isMainNode = xmlParser.NodeList.Any(n => n.Name == connection.To);
 
-                // Wybierz kolor linii:
                 // - Czerwona, jeœli po³¹czony wêze³ to g³ówny wêze³
                 // - ¯ó³ta, jeœli to podwêze³
                 Color lineColor = isMainNode ? Color.red : Color.yellow;
 
-                // Narysuj liniê od currentPosition do connectedPosition
                 Debug.DrawRay(currentPosition, connectedPosition - currentPosition, lineColor, 1f);
             }
         }
+    }
+
+    public void NavigateTo(string destinationName)
+    {
+        Debug.Log($"Selected node: {destinationName}");
+
     }
 }
