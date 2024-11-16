@@ -37,6 +37,11 @@ public class EditNode : MonoBehaviour
         relPos =  userCamera.position - relativePoint;
         parser.NodeList[pointer].AddConnection(newNodeName, new Vector3(relPos.x, relPos.y, relPos.z));
 
+        Vector3 relPosSecond = relativePoint - userCamera.position;
+        Node newNode = new Node(newNodeName);
+        newNode.AddConnection(parser.NodeList[pointer].Name, new Vector3(relPosSecond.x, relPosSecond.y, relPosSecond.z));
+        parser.NodeList.Add(newNode);
+
         nameInput.Select();
         nameInput.text = "";
     }

@@ -37,6 +37,17 @@ public class NavigationManager : MonoBehaviour
         xmlParser = new XMLParser();
         xmlParser.ParseXML(dataPath);
 
+        Debug.Log("Nodes:");
+
+        foreach (var node in xmlParser.NodeList)
+        {
+            Debug.Log(node.Name);
+            foreach (var c in node.ConnectedNodes)
+            {
+                Debug.Log($"\t>{c.To}");
+            }
+        }
+
         // Tworzenie listy wêz³ów na podstawie xmlParser
         list = new NodeList(xmlParser.NodeList);
 
@@ -79,13 +90,13 @@ public class NavigationManager : MonoBehaviour
         }
     }
 
-    public void NavigateTo(string destinationName)
+    public void NavigateTo(string destinationNode)
     {
-        Debug.Log($"Selected node: {destinationName}");
+        string startNode = "kettle";
+        Debug.Log($"Finding path from: {startNode} to {destinationNode}");
 
         if (pathFinder == null) return;
-
-        Path path = pathFinder.FindShortestPath("Kettle", destinationName);
+        Path path = pathFinder.FindShortestPath(startNode, destinationNode);
 
         if (path == null || path.Nodes.Count == 0)
         {
@@ -94,12 +105,12 @@ public class NavigationManager : MonoBehaviour
         }
 
         Debug.Log($"Navigation log for {path.Nodes.Count} steps:");
-        lineRenderer.positionCount = path.Nodes.Count;
+        //lineRenderer.positionCount = path.Nodes.Count;
         // Unity line renderer change points len
         for (int i = 1; i < path.Nodes.Count; i++)
         {
             //Vector3 relativePosition = new Vector3(connection.Relative_x, connection.Relative_y, connection.Relative_z);
-            lineRenderer.SetPosition(i - 1, new Vector3(1,1,1));
+            //lineRenderer.SetPosition(i - 1, new Vector3(1,1,1));
             Debug.Log($"Step {i}: go from {path.Nodes[i - 1].Name} to {path.Nodes[i].Name}");
         }
     }
