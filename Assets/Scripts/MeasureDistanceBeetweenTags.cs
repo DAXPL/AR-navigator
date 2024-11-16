@@ -9,8 +9,8 @@ using UnityEngine.XR.ARFoundation;
 public class MeasureDistanceBeetweenTags : MonoBehaviour
 {
     [SerializeField] ARTrackedImageManager m_TrackedImageManager;
-    private string referenceNode="";
-    private string targetNode="";
+    private NodeData referenceNode;
+    private NodeData targetNode;
 
     [SerializeField] private GameObject startIndicator;
     [SerializeField] private GameObject endIndicator;
@@ -29,8 +29,8 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
     private void OnEnable()
     {
         referenceLocked = false;
-        referenceNode = "";
-        targetNode = "";
+        referenceNode = null;
+        targetNode = null;
 
         startIndicator.SetActive(false);
         endIndicator.SetActive(false);
@@ -52,8 +52,8 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
 
         foreach (var newImage in images)
         {
-            string imageName = newImage.referenceImage.name;
-            imagesText.text += $"{imageName} | {newImage.trackingState}\n";
+            string imageID = newImage.referenceImage.name;
+            imagesText.text += $"{imageID} | {newImage.trackingState}\n";
 
             // Continue only if the image is being tracked
             if (newImage.trackingState != UnityEngine.XR.ARSubsystems.TrackingState.Tracking) continue;
@@ -61,18 +61,18 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
             if (!referenceLocked)
             {
                 // Set the reference node if not locked
-                if (referenceNode == null || referenceNode == "")
+                if (referenceNode == null)
                 {
-                    referenceNode = imageName;
+                    referenceNode = new NodeData(imageID, imageID);
                     startIndicator.transform.position = newImage.transform.position;
                     startIndicator.SetActive(true);
                 }
             }
-            else if (targetNode != imageName)
+            else if (targetNode == null || targetNode.tagId != imageID)
             {
-                if(imageName == referenceNode) return;
+                if(imageID == referenceNode.tagId) return;
                 // Set the target node if reference is locked
-                targetNode = imageName;
+                targetNode = new NodeData(imageID, imageID);
                 endIndicator.transform.position = newImage.transform.position;
                 endIndicator.SetActive(true);
             }
@@ -86,7 +86,7 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
 
         if (!referenceLocked)
         {
-            targetNode = "";
+            targetNode = null;
             endIndicator.SetActive(false);
         }
         else
@@ -98,18 +98,18 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
 
     private void Update()
     {
-        saveButton.interactable = (!string.IsNullOrEmpty(referenceNode) && !string.IsNullOrEmpty(targetNode));
+        saveButton.interactable = (referenceNode!=null && targetNode!=null);
 
         XMLParser parser = MeasureManger.parser;
         if (parser == null) return;
 
-        startIndicator.SetActive(!string.IsNullOrEmpty(referenceNode));
-        endIndicator.SetActive(!string.IsNullOrEmpty(targetNode));
+        startIndicator.SetActive(referenceNode!=null);
+        endIndicator.SetActive(targetNode!=null);
 
-        referenceNodeText.SetText(!string.IsNullOrEmpty(referenceNode) ? referenceNode : "No ref node");
-        targetNodeText.SetText(!string.IsNullOrEmpty(targetNode) ? targetNode : "No target node");
+        referenceNodeText.SetText(referenceNode!=null ? referenceNode.tagId : "No ref node");
+        targetNodeText.SetText(targetNode != null ? targetNode.tagId : "No target node");
 
-        float dist = (!string.IsNullOrEmpty(referenceNode) && !string.IsNullOrEmpty(targetNode))
+        float dist = (referenceNode != null && targetNode != null)
             ? Vector3.Distance(startIndicator.transform.position, endIndicator.transform.position)
             : 0;
 
@@ -118,7 +118,7 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
 
     public void SaveConnection()
     {
-        if(string.IsNullOrEmpty(referenceNode) || string.IsNullOrEmpty(targetNode))return;
+        if(referenceNode==null || targetNode==null)return;
         XMLParser parser = MeasureManger.parser;
         if (parser == null) return;
 
@@ -128,26 +128,42 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
         for (int i = 0; i < parser.NodeList.Count; i++) 
         {
             Node node = parser.NodeList[i];
-            if(node.Name == referenceNode) start = node;
-            if(node.Name == targetNode) end = node;
+            if(node.TagId == referenceNode.tagId) start = node;
+            if(node.TagId == targetNode.tagId) end = node;
             if (start != null && end != null) break; 
         }
 
         if(start == null)
         {
-            parser.NodeList.Add(new Node(referenceNode));
+            parser.NodeList.Add(new Node(referenceNode.nodeName,referenceNode.tagId));
             start = parser.NodeList[parser.NodeList.Count - 1];
         }
         if (end == null) 
         {
-            parser.NodeList.Add(new Node(targetNode));
+            parser.NodeList.Add(new Node(targetNode.nodeName, targetNode.tagId));
             end = parser.NodeList[parser.NodeList.Count - 1];
         }
 
         if(start == null || end == null) return;
 
-        start.AddConnection(targetNode, endIndicator.transform.position - startIndicator.transform.position);
-        end.AddConnection(referenceNode, startIndicator.transform.position - endIndicator.transform.position);
+        start.AddConnection(targetNode.nodeName, endIndicator.transform.position - startIndicator.transform.position);
+        end.AddConnection(referenceNode.nodeName, startIndicator.transform.position - endIndicator.transform.position);
 
+    }
+}
+public class NodeData
+{
+    public string nodeName = "";
+    public string tagId = "";
+
+    public NodeData()
+    {
+        nodeName = "";
+        tagId = "";
+    }
+    public NodeData(string nd, string id)
+    {
+        nodeName = nd;
+        tagId = id;
     }
 }

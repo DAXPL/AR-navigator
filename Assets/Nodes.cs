@@ -8,6 +8,10 @@ public class NodeList
 	{
 		Nodes = new List<Node>();
 	}
+	public NodeList(List<Node> nodes)
+	{
+		Nodes = nodes;
+	}
 
 	public List<Node> Nodes { get; set; }
 
@@ -61,16 +65,22 @@ public class Node
 		Name = name;
 		ConnectedNodes = new List<NodeConnection>();
 	}
+    public Node(string name, string tagId)
+    {
+        Name = name;
+        TagId = tagId;
+        ConnectedNodes = new List<NodeConnection>();
+    }
 
-	public Node(int tagId, string name, List<NodeConnection> connectedNodes)
+    public Node(string tagId, string name, List<NodeConnection> connectedNodes)
 	{
 		TagId = tagId;
 		Name = name;
 		ConnectedNodes = connectedNodes;
 	}
 
-	public int TagId { get; set; }
-	public string Name { get; private set; }
+	public string TagId { get; set; }
+	public string Name;
 	public List<NodeConnection> ConnectedNodes { get; set; }
 	public bool isTracked = false;
 
