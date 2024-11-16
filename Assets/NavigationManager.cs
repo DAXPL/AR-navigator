@@ -9,9 +9,20 @@ public class NavigationManager : MonoBehaviour
     public static NavigationManager Instance;
     public XMLParser xmlParser;
     private string dataPath ="";
+    private PathFinder pathFinder;
+
     private void Awake()
     {
-        if(Instance == null) Instance = this;
+        if (Instance == null) 
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
     }
     private void Start()
     {
@@ -19,6 +30,8 @@ public class NavigationManager : MonoBehaviour
         Debug.Log(dataPath);
         xmlParser = new XMLParser();
         xmlParser.ParseXML(dataPath);
+
+        pathFinder = new PathFinder(xmlParser.NodeList);
     }
     public void OnImageChanged(ARTrackablesChangedEventArgs<ARTrackedImage> eventArgs)
     {
@@ -59,6 +72,15 @@ public class NavigationManager : MonoBehaviour
     public void NavigateTo(string destinationName)
     {
         Debug.Log($"Selected node: {destinationName}");
+        if(pathFinder == null) return;
 
+        Path path = pathFinder.FindShortestPath("Kettle",destinationName);
+        Debug.Log($"Navigation log for {path.Nodes.Count()} steps:");
+        //Unity line renderer change points len
+        for(int i = 1; i < path.Nodes.Count(); i++)
+        {
+            Debug.Log($"Step {i}: go from {path.Nodes[i-1]} {path.Nodes[1]}");
+            //change line renderer point to path.Nodes[i] pos
+        }
     }
 }

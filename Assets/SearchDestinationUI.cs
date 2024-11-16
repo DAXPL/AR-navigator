@@ -12,7 +12,6 @@ public class SearchDestinationUI : MonoBehaviour
     [SerializeField] private Transform selectPanel;
     [SerializeField] private Transform optionsButton;
 
-
     public void OnEndEdit(string input)
     {
         for (int i = buttonHolder.childCount - 1; i >= 0; i--)

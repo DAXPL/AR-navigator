@@ -68,7 +68,7 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
                     startIndicator.SetActive(true);
                 }
             }
-            else if (targetNode.tagId != imageID)
+            else if (targetNode == null || targetNode.tagId != imageID)
             {
                 if(imageID == referenceNode.tagId) return;
                 // Set the target node if reference is locked

@@ -76,7 +76,7 @@ public class Node
 	}
 
 	public string TagId { get; set; }
-	public string Name { get; private set; }
+	public string Name;
 	public List<NodeConnection> ConnectedNodes { get; set; }
 	public bool isTracked = false;
 
