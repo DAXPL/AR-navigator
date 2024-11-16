@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.MemoryProfiler;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 
@@ -10,6 +11,9 @@ public class NavigationManager : MonoBehaviour
     public XMLParser xmlParser;
     private string dataPath ="";
     private PathFinder pathFinder;
+    NodeList list;
+
+    private LineRenderer lineRenderer;
 
     private void Awake()
     {
@@ -26,12 +30,20 @@ public class NavigationManager : MonoBehaviour
     }
     private void Start()
     {
+        lineRenderer = GetComponent<LineRenderer>();
+
         dataPath = $"{Application.persistentDataPath}/data.xml";
         Debug.Log(dataPath);
         xmlParser = new XMLParser();
         xmlParser.ParseXML(dataPath);
 
-        pathFinder = new PathFinder(xmlParser.NodeList);
+        // Tworzenie listy wêz³ów na podstawie xmlParser
+        list = new NodeList();
+        foreach (var node in xmlParser.NodeList)
+        {
+            list.Add(node);
+        }
+        pathFinder = new PathFinder(list);
     }
     public void OnImageChanged(ARTrackablesChangedEventArgs<ARTrackedImage> eventArgs)
     {
@@ -72,15 +84,29 @@ public class NavigationManager : MonoBehaviour
     public void NavigateTo(string destinationName)
     {
         Debug.Log($"Selected node: {destinationName}");
-        if(pathFinder == null) return;
-
-        Path path = pathFinder.FindShortestPath("Kettle",destinationName);
-        Debug.Log($"Navigation log for {path.Nodes.Count()} steps:");
-        //Unity line renderer change points len
-        for(int i = 1; i < path.Nodes.Count(); i++)
+        Debug.Log($"Nodes in graph:");
+        foreach (var n in pathFinder.Graph.Nodes)
         {
-            Debug.Log($"Step {i}: go from {path.Nodes[i-1]} {path.Nodes[1]}");
-            //change line renderer point to path.Nodes[i] pos
+            Debug.Log($"\t>{n.Name}");
+        }
+        if (pathFinder == null) return;
+
+        Path path = pathFinder.FindShortestPath("Kettle", destinationName);
+
+        if (path == null || path.Nodes.Count == 0)
+        {
+            Debug.LogWarning("No path found.");
+            return;
+        }
+
+        Debug.Log($"Navigation log for {path.Nodes.Count} steps:");
+        lineRenderer.positionCount = path.Nodes.Count;
+        // Unity line renderer change points len
+        for (int i = 1; i < path.Nodes.Count; i++)
+        {
+            //Vector3 relativePosition = new Vector3(connection.Relative_x, connection.Relative_y, connection.Relative_z);
+            lineRenderer.SetPosition(i - 1, new Vector3(1,1,1));
+            Debug.Log($"Step {i}: go from {path.Nodes[i - 1].Name} to {path.Nodes[i].Name}");
         }
     }
 }
