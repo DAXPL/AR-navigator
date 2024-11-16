@@ -8,6 +8,10 @@ public class NodeList
 	{
 		Nodes = new List<Node>();
 	}
+	public NodeList(List<Node> nodes)
+	{
+		Nodes = nodes;
+	}
 
 	public List<Node> Nodes { get; set; }
 

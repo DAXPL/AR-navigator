@@ -38,11 +38,8 @@ public class NavigationManager : MonoBehaviour
         xmlParser.ParseXML(dataPath);
 
         // Tworzenie listy wêz³ów na podstawie xmlParser
-        list = new NodeList();
-        foreach (var node in xmlParser.NodeList)
-        {
-            list.Add(node);
-        }
+        list = new NodeList(xmlParser.NodeList);
+
         pathFinder = new PathFinder(list);
     }
     public void OnImageChanged(ARTrackablesChangedEventArgs<ARTrackedImage> eventArgs)
@@ -65,8 +62,9 @@ public class NavigationManager : MonoBehaviour
 
             foreach (NodeConnection connection in currentNode.ConnectedNodes)
             {
-                // Oblicz wzglêdn¹ pozycjê po³¹czonego wêz³a (podwêz³a) w przestrzeni AR
-                Vector3 relativePosition = new Vector3(connection.Relative_x, connection.Relative_y, connection.Relative_z);
+				// Oblicz wzglêdn¹ pozycjê po³¹czonego wêz³a (podwêz³a) w przestrzeni AR
+				//replaceable with Vector3 relativePosition = connection.GetVector()
+				Vector3 relativePosition = new Vector3(connection.Relative_x, connection.Relative_y, connection.Relative_z);
                 Vector3 connectedPosition = currentPosition + relativePosition;
 
                 // SprawdŸ, czy po³¹czony wêze³ istnieje w `NodeList` jako g³ówny wêze³
@@ -84,11 +82,7 @@ public class NavigationManager : MonoBehaviour
     public void NavigateTo(string destinationName)
     {
         Debug.Log($"Selected node: {destinationName}");
-        Debug.Log($"Nodes in graph:");
-        foreach (var n in pathFinder.Graph.Nodes)
-        {
-            Debug.Log($"\t>{n.Name}");
-        }
+
         if (pathFinder == null) return;
 
         Path path = pathFinder.FindShortestPath("Kettle", destinationName);
