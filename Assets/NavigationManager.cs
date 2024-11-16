@@ -122,13 +122,12 @@ public class NavigationManager : MonoBehaviour
     public void NavigateTo(string destinationNode)
     {
         if (pathFinder == null) return;
-        Debug.Log($"Finding path from: {lastTrackedPoint} to {destinationNode}");
-        Path path = pathFinder.FindShortestPath(lastTrackedPoint, destinationNode);
-
-        if(path.Nodes.Count <= 0) return;
+        Debug.Log($"Finding path from: {lastTrackedPoint} to {destinationNode}"); 
 
         destination = destinationNode;
         isTraveling = true;
+
+        Path path = pathFinder.FindShortestPath(lastTrackedPoint, destinationNode);
 
         if (lastTrackedPoint != "") DrawPath(path);
         else scanEnviroUI.gameObject.SetActive(true);
@@ -154,15 +153,21 @@ public class NavigationManager : MonoBehaviour
         lineRenderer.positionCount = path.Nodes.Count + 1;
         lineRenderer.SetPosition(0, userCamera.transform.position - Vector3.up);
 
+        int linePosCount = 1;
+
         Vector3 pos = lastTrackedPosition;
         for (int i = 0; i < path.Nodes.Count; i++)
         {
-            Debug.Log($"Step {i}: {path.Nodes[i].Name}");
-            lineRenderer.SetPosition(i + 1, pos);
+            if (Vector3.Distance(pos,userCamera.position)>0.5f)
+            {
+                lineRenderer.SetPosition(linePosCount, pos);
+                linePosCount++;
+            }
+            
             if (path.Nodes[i].ConnectedNodes.Count > 0)
                 pos += path.Nodes[i].ConnectedNodes[0].GetVector();
-
         }
+        lineRenderer.positionCount = linePosCount;
         destinationPosition = pos;
     }
 
