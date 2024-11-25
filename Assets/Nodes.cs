@@ -99,9 +99,10 @@ public class NodeConnection
 {
 	NodeConnection() { }
 
-	public NodeConnection(string to, Vector3 relativePosition)
+	public NodeConnection(string to, Vector3 relativePosition, bool accessible = true)
 	{
 		To = to;
+		IsWheelchairAccessible = accessible;
 		Relative_x = relativePosition.x;
 		Relative_y = relativePosition.y;
 		Relative_z = relativePosition.z;
@@ -110,6 +111,7 @@ public class NodeConnection
 	}
 
 	public string To { get; set; }
+	public bool IsWheelchairAccessible { get; set; }
 	public float Relative_x { get; set; }
 	public float Relative_y { get; set; }
 	public float Relative_z { get; set; }
