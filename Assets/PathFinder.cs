@@ -12,6 +12,7 @@ public class PathFinder
 		Graph = new NodeList();
 		WorkGraph = new Dictionary<string, PathNode>();
 		shortestPath = new Path();
+		SearchWheelchairAccessible = false;
 	}
 
 	public PathFinder(NodeList graph)
@@ -19,16 +20,27 @@ public class PathFinder
 		Graph = graph;
 		WorkGraph = new Dictionary<string, PathNode>();
 		shortestPath = new Path();
+		SearchWheelchairAccessible = false;
 	}
 
 	NodeList Graph { get; set; }
 	Dictionary<string, PathNode> WorkGraph { get; set; }
 	Path shortestPath { get; set; }
+	bool SearchWheelchairAccessible { get; set; }
 	const float floatError = 0.001f;
 
 	public void LoadGraph(NodeList graph)
 	{
 		Graph = graph;
+	}
+	public void ToggleAccessibility(bool? searchOnlyAccessible = null)
+	{
+		if(searchOnlyAccessible != null)
+		{
+			SearchWheelchairAccessible = searchOnlyAccessible.Value;
+			return;
+		}
+		SearchWheelchairAccessible = !SearchWheelchairAccessible;
 	}
 
 	public Path FindShortestPath(string from, string to, [Optional] NodeList graph)
@@ -85,6 +97,10 @@ public class PathFinder
 	{
 		foreach (NodeConnection connection in startNode.ConnectedNodes.ToList())
 		{
+			//If wheelchair accessible search enabled and connection isn't wheelchair accessible
+			if(SearchWheelchairAccessible && !connection.IsWheelchairAccessible)
+				continue;
+
 			//If the distance to the connected node is smaller than assigned to that node, assign the distance from the current node
 			if (startNode.Distance + connection.GetDistance() < WorkGraph[connection.To].Distance)
 			{

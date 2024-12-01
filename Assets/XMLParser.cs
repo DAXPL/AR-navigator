@@ -42,6 +42,12 @@ public class XMLParser
 			foreach (var nodeConnection in node.Descendants("NodeConnection"))
 			{
 				string to = nodeConnection.Element((XName)"To").Value.ToString().Trim();
+				bool wheelchairAccessible = true;
+
+				if (node.Element((XName)"WheelchairAccessible") != null)
+				{
+					bool.TryParse(node.Element((XName)"WheelchairAccessible").Value.ToString().Trim(), out wheelchairAccessible);
+				}
 
 				//Relative position of connected node 
 				float x = float.Parse(nodeConnection.Element((XName)"Relative_x").Value.Replace('.', ','));
@@ -49,7 +55,7 @@ public class XMLParser
 				float z = float.Parse(nodeConnection.Element((XName)"Relative_z").Value.Replace('.', ','));
 				Vector3 relativePosition = new Vector3(x, y, z);
 
-				nodeConnections.Add(new NodeConnection(to, relativePosition));
+				nodeConnections.Add(new NodeConnection(to, relativePosition, wheelchairAccessible));
 			}
 
 			string name = node.Element((XName)"Name").Value.ToString().Trim();
