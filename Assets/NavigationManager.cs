@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using UnityEditor.MemoryProfiler;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
-using static UnityEditor.PlayerSettings;
 
 public class NavigationManager : MonoBehaviour
 {
@@ -119,7 +117,7 @@ public class NavigationManager : MonoBehaviour
         }
     }
 
-    public void NavigateTo(string destinationNode)
+    public void NavigateTo(string destinationNode, bool wheelChair)
     {
         if (pathFinder == null) return;
         Debug.Log($"Finding path from: {lastTrackedPoint} to {destinationNode}"); 
@@ -127,6 +125,7 @@ public class NavigationManager : MonoBehaviour
         destination = destinationNode;
         isTraveling = true;
 
+        pathFinder.ToggleAccessibility(wheelChair);
         Path path = pathFinder.FindShortestPath(lastTrackedPoint, destinationNode);
 
         if (lastTrackedPoint != "") DrawPath(path);
