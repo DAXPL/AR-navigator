@@ -11,6 +11,7 @@ public class SearchDestinationUI : MonoBehaviour
 
     [SerializeField] private Transform selectPanel;
     [SerializeField] private Transform optionsButton;
+    [SerializeField] private Toggle wheelchairToggle;
 
     public void OnEndEdit(string input)
     {
@@ -62,9 +63,13 @@ public class SearchDestinationUI : MonoBehaviour
     private void OnDestinationSelected(string destinationName)
     {
         if (NavigationManager.Instance == null) return;
-        NavigationManager.Instance.NavigateTo(destinationName);
+        NavigationManager.Instance.NavigateTo(destinationName, wheelchairToggle.isOn);
 
         if(selectPanel) selectPanel.gameObject.SetActive(false);
         if(optionsButton) optionsButton.gameObject.SetActive(true);
+    }
+    public void OpenWebsite(string url)
+    {
+        Application.OpenURL(url);
     }
 }
