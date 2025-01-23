@@ -34,6 +34,14 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
 
         startIndicator.SetActive(false);
         endIndicator.SetActive(false);
+
+        lockButtonText.SetText(referenceLocked ? "Unlock" : "Lock");
+
+        m_TrackedImageManager.trackablesChanged.AddListener(OnImageChanged);
+    }
+    private void OnDisable()
+    {
+        m_TrackedImageManager.trackablesChanged.RemoveListener(OnImageChanged);
     }
 
     public void OnImageChanged(ARTrackablesChangedEventArgs<ARTrackedImage> eventArgs)
@@ -44,7 +52,6 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
 
     private void UpdateNodesReferences(ReadOnlyList<ARTrackedImage> images, bool first = false)
     {
-        if(!this.isActiveAndEnabled) return;
         // Reset referenceNode if it's not locked
         if (!referenceLocked) referenceNode = null;
         targetNode=null;

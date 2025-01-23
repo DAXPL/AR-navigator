@@ -11,7 +11,7 @@ public class EditNode : MonoBehaviour
     [SerializeField] private TextMeshProUGUI positionText;
     [SerializeField] private TextMeshProUGUI currentNodeText;
     [SerializeField] private Transform userCamera;
-
+    [SerializeField] private GameObject cube;
     private string newNodeName = "";
     private int pointer = 0;
     private Vector3 relativePoint = Vector3.zero;
@@ -20,8 +20,14 @@ public class EditNode : MonoBehaviour
     private void OnEnable()
     {
         pointer = 0;
+        m_TrackedImageManager.trackablesChanged.AddListener(OnImageChanged);
+        
     }
-   
+    private void OnDisable()
+    {
+        m_TrackedImageManager.trackablesChanged.RemoveListener(OnImageChanged);
+    }
+
     private void Update()
     {
         relPos = relativePoint - userCamera.position;
@@ -53,7 +59,6 @@ public class EditNode : MonoBehaviour
 
     public void OnImageChanged(ARTrackablesChangedEventArgs<ARTrackedImage> eventArgs)
     {
-
         UpdateNodesReferences(eventArgs.added);
         UpdateNodesReferences(eventArgs.updated);
     }
@@ -73,6 +78,10 @@ public class EditNode : MonoBehaviour
                 pointer = i;
                 currentNodeText.SetText($"Node: {parser.NodeList[pointer].Name} | {image.transform.position}");
                 relativePoint = image.transform.position;
+
+                cube.SetActive(true);
+                cube.transform.position = image.transform.position;
+                cube.transform.rotation = image.transform.rotation;
                 break;
             }
         }

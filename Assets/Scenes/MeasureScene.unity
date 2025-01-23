@@ -2107,6 +2107,7 @@ MonoBehaviour:
   positionText: {fileID: 779480713}
   currentNodeText: {fileID: 238510821}
   userCamera: {fileID: 2512387468973847774}
+  cube: {fileID: 1679254485}
 --- !u!1 &917396172
 GameObject:
   m_ObjectHideFlags: 0
@@ -2788,6 +2789,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodesOutput: {fileID: 1356066618}
+  cubes:
+  - {fileID: 1679254485}
+  - {fileID: 1523809576}
 --- !u!1 &1167446570
 GameObject:
   m_ObjectHideFlags: 0
@@ -3096,6 +3100,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 965006518}
+        m_TargetAssemblyTypeName: MeasureManger, Assembly-CSharp
+        m_MethodName: ClearCubes
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3668,7 +3684,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 77be49bdc159f564a98dcab9a9878f78, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3831,10 +3847,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 2145923236}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 965006518}
+        m_TargetAssemblyTypeName: MeasureManger, Assembly-CSharp
+        m_MethodName: ClearCubes
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4326,6 +4342,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 965006518}
+        m_TargetAssemblyTypeName: MeasureManger, Assembly-CSharp
+        m_MethodName: ClearCubes
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1664272931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4377,7 +4405,7 @@ GameObject:
   - component: {fileID: 1679254487}
   - component: {fileID: 1679254486}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Cube (0)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4406,7 +4434,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 5d0b98ca40f711d4797ced68b9c6f9f6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5609,31 +5637,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <trackablesChanged>k__BackingField:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2145923238}
-        m_TargetAssemblyTypeName: MeasureDistanceBeetweenTags, Assembly-CSharp
-        m_MethodName: OnImageChanged
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 884421340}
-        m_TargetAssemblyTypeName: EditNode, Assembly-CSharp
-        m_MethodName: OnImageChanged
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_SerializedLibrary: {fileID: 11400000, guid: cd6c4be6ed9407d48a9d66e0840b9f8c,
     type: 2}
   m_MaxNumberOfMovingImages: 4

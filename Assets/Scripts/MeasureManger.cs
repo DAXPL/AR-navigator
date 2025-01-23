@@ -11,6 +11,7 @@ public class MeasureManger : MonoBehaviour
     public static XMLParser parser;
     private string dataPath;
     [SerializeField] private TextMeshProUGUI nodesOutput;
+    [SerializeField] private GameObject[] cubes;
 
     void Start()
     {
@@ -50,5 +51,13 @@ public class MeasureManger : MonoBehaviour
     public void SaveXML()
     {
         XMLParser.ToXmlFile(parser.NodeList, dataPath);
+    }
+
+    public void ClearCubes()
+    {
+        foreach (var c in cubes) 
+        { 
+            c.SetActive(false);
+        }
     }
 }
