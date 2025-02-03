@@ -9,7 +9,7 @@ public class SearchDestinationUI : MonoBehaviour
     [SerializeField] private Button selectDestinationButton;
     [SerializeField] private Transform buttonHolder;
 
-    [SerializeField] private Transform selectPanel;
+    [SerializeField] private PanelFlow selectPanel;
     [SerializeField] private Transform optionsButton;
     [SerializeField] private Toggle wheelchairToggle;
 
@@ -65,7 +65,7 @@ public class SearchDestinationUI : MonoBehaviour
         if (NavigationManager.Instance == null) return;
         NavigationManager.Instance.NavigateTo(destinationName, wheelchairToggle.isOn);
 
-        if(selectPanel) selectPanel.gameObject.SetActive(false);
+        if(selectPanel) selectPanel.FlowOut();
         if(optionsButton) optionsButton.gameObject.SetActive(true);
     }
     public void OpenWebsite(string url)
