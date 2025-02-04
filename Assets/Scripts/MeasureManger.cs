@@ -8,9 +8,11 @@ using UnityEngine.XR.ARFoundation;
 
 public class MeasureManger : MonoBehaviour
 {
+    [SerializeField] ARTrackedImageManager m_TrackedImageManager;
     public static XMLParser parser;
     private string dataPath;
     [SerializeField] private TextMeshProUGUI nodesOutput;
+    [SerializeField] private TextMeshProUGUI debugOutput;
     [SerializeField] private GameObject[] cubes;
 
     void Start()
@@ -40,6 +42,15 @@ public class MeasureManger : MonoBehaviour
             }
 
             i++;
+        }
+
+        debugOutput.SetText("");
+        foreach (var image in m_TrackedImageManager.trackables)
+        {
+            string imageName = image.referenceImage.name;
+            var trackingState = image.trackingState;
+
+            debugOutput.text += $"{imageName} | {trackingState} \n";
         }
     }
 

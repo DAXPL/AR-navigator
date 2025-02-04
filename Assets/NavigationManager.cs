@@ -173,7 +173,7 @@ public class NavigationManager : MonoBehaviour
     public void EndNavigation()
     {
         destination = "";
-        isTraveling = true;
+        isTraveling = false;
         lineRenderer.positionCount = 0;
         destinationPosition = Vector3.zero;
     }

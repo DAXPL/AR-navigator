@@ -1,5 +1,0 @@
-C:/UnityProjectsC/Navigator/.utmp/RelWithDebInfo/81j1h85u/arm64-v8a/CMakeFiles/edit_cache.dir
-C:/UnityProjectsC/Navigator/.utmp/RelWithDebInfo/81j1h85u/arm64-v8a/CMakeFiles/rebuild_cache.dir
-C:/UnityProjectsC/Navigator/.utmp/RelWithDebInfo/81j1h85u/arm64-v8a/GameActivity/CMakeFiles/game.dir
-C:/UnityProjectsC/Navigator/.utmp/RelWithDebInfo/81j1h85u/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
-C:/UnityProjectsC/Navigator/.utmp/RelWithDebInfo/81j1h85u/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir

@@ -22,8 +22,6 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
     [SerializeField] private TextMeshProUGUI distanceText;
     [SerializeField] private TextMeshProUGUI lockButtonText;
 
-    [SerializeField] private TextMeshProUGUI imagesText;
-
     private bool referenceLocked = false;
 
     private void OnEnable()
@@ -55,12 +53,10 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
         // Reset referenceNode if it's not locked
         if (!referenceLocked) referenceNode = null;
         targetNode=null;
-        imagesText.SetText("");
 
         foreach (var newImage in images)
         {
             string imageID = newImage.referenceImage.name;
-            imagesText.text += $"{imageID} | {newImage.trackingState}\n";
 
             // Continue only if the image is being tracked
             if (newImage.trackingState != UnityEngine.XR.ARSubsystems.TrackingState.Tracking) continue;

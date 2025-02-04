@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEditor.Profiling.RawFrameDataView;
 
 public class PanelFlow : MonoBehaviour
 {
