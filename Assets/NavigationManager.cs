@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.XR.ARFoundation;
 
 public class NavigationManager : MonoBehaviour
@@ -19,8 +20,7 @@ public class NavigationManager : MonoBehaviour
     private Vector3 lastTrackedPosition = Vector3.zero;
     private Vector3 destinationPosition = Vector3.zero;
     [SerializeField] private Transform userCamera;
-    [SerializeField] private Transform travelEndUI;
-    [SerializeField] private Transform scanEnviroUI;
+    private SearchDestinationUI searchDestinationUI;
 
     private bool isTraveling = false;
     private string destination = "";
@@ -51,6 +51,8 @@ public class NavigationManager : MonoBehaviour
         list = new NodeList(xmlParser.NodeList);
         pathFinder = new PathFinder(list);
 
+        if (searchDestinationUI == null) searchDestinationUI = FindFirstObjectByType<SearchDestinationUI>();
+
         //DEBUG
         //lastTrackedPoint = "0";
         //lastTrackedPosition = new Vector3(-0.693f,1.374f,1.401f);
@@ -63,7 +65,7 @@ public class NavigationManager : MonoBehaviour
         if(lineRenderer.positionCount>0) lineRenderer.SetPosition(0, userCamera.transform.position - Vector3.up);
         if (Vector3.Distance(userCamera.position, destinationPosition) < 1)
         {
-            travelEndUI.gameObject.SetActive(true);
+            if(searchDestinationUI)searchDestinationUI.SetAnimatorBooleanValue("ShowArrivalInfo", true);
         } 
     }
 
@@ -129,13 +131,13 @@ public class NavigationManager : MonoBehaviour
         Path path = pathFinder.FindShortestPath(lastTrackedPoint, destinationNode);
 
         if (lastTrackedPoint != "") DrawPath(path);
-        else scanEnviroUI.gameObject.SetActive(true);
+        else if (searchDestinationUI) searchDestinationUI.SetAnimatorBooleanValue("ShowScanEnviroUI", true);
     }
     
     //update on scan or when close enough
     private void UpdatePath()
     {
-        scanEnviroUI.gameObject.SetActive(lastTrackedPoint == "");
+        if (searchDestinationUI) searchDestinationUI.SetAnimatorBooleanValue("ShowScanEnviroUI", lastTrackedPoint == "");
         if (lastTrackedPoint == "") return;
         Path path = pathFinder.FindShortestPath(lastTrackedPoint, destination);
         DrawPath(path);  
@@ -173,7 +175,7 @@ public class NavigationManager : MonoBehaviour
     public void EndNavigation()
     {
         destination = "";
-        isTraveling = true;
+        isTraveling = false;
         lineRenderer.positionCount = 0;
         destinationPosition = Vector3.zero;
     }

@@ -8,10 +8,14 @@ public class SearchDestinationUI : MonoBehaviour
 {
     [SerializeField] private Button selectDestinationButton;
     [SerializeField] private Transform buttonHolder;
-
-    [SerializeField] private Transform selectPanel;
-    [SerializeField] private Transform optionsButton;
     [SerializeField] private Toggle wheelchairToggle;
+
+    private Animator animator;
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     public void OnEndEdit(string input)
     {
@@ -64,12 +68,33 @@ public class SearchDestinationUI : MonoBehaviour
     {
         if (NavigationManager.Instance == null) return;
         NavigationManager.Instance.NavigateTo(destinationName, wheelchairToggle.isOn);
-
-        if(selectPanel) selectPanel.gameObject.SetActive(false);
-        if(optionsButton) optionsButton.gameObject.SetActive(true);
     }
     public void OpenWebsite(string url)
     {
         Application.OpenURL(url);
+    }
+
+    public void ToggleAnimatorBoolean(string booleanName)
+    {
+        if(animator == null) return;
+        bool curVal = animator.GetBool(booleanName);
+        animator.SetBool(booleanName, !curVal);
+    }
+
+    public void SetAnimatorBoolean(string booleanName)
+    {
+        if (animator == null) return;
+        animator.SetBool(booleanName, true);
+    }
+
+    public void ResetAnimatorBoolean(string booleanName)
+    {
+        if (animator == null) return;
+        animator.SetBool(booleanName, false);
+    }
+    public void SetAnimatorBooleanValue(string booleanName, bool val)
+    {
+        if (animator == null) return;
+        animator.SetBool(booleanName, val);
     }
 }

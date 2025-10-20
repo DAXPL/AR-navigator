@@ -1,0 +1,1 @@
+C:\Users\klimm\Documents\AR-navigator\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\build\intermediates\cxx\RelWithDebInfo\282g6u1x\obj\arm64-v8a
