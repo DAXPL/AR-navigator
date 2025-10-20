@@ -8,6 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/NavigateScene.unity
     guid: 2390b8852eacd0340a585fcb936a400c
+  - enabled: 0
+    path: Assets/Scenes/MeasureScene.unity
+    guid: 7c4350c423f7eee4795b54d67ce283a9
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 6ee72d15cf39dd748a13eac57397b9af,
       type: 2}

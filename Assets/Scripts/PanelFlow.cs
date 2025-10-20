@@ -20,6 +20,12 @@ public class PanelFlow : MonoBehaviour
         StartCoroutine(FlowUp(false));
     }
 
+    public void InvokeFlowOutEvent()
+    {
+        FlowOutEndEvent.Invoke();
+    }
+
+
     private IEnumerator FlowUp(bool flowUp = true)
     {
         if(flowUp) FlowInStartEvent.Invoke();

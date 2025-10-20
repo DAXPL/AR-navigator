@@ -1,0 +1,5 @@
+C:/Users/klimm/Documents/AR-navigator/.utmp/RelWithDebInfo/282g6u1x/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/klimm/Documents/AR-navigator/.utmp/RelWithDebInfo/282g6u1x/arm64-v8a/CMakeFiles/rebuild_cache.dir
+C:/Users/klimm/Documents/AR-navigator/.utmp/RelWithDebInfo/282g6u1x/arm64-v8a/GameActivity/CMakeFiles/game.dir
+C:/Users/klimm/Documents/AR-navigator/.utmp/RelWithDebInfo/282g6u1x/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+C:/Users/klimm/Documents/AR-navigator/.utmp/RelWithDebInfo/282g6u1x/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir

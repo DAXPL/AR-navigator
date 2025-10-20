@@ -17,14 +17,22 @@ public class XMLParser
 	public void ParseXML(string _xmlFilePath, XDocument documentToParse = null)
 	{
 		NodeList.Clear();
-		XDocument xmlDoc;
+		XDocument xmlDoc = null;
 		if (documentToParse != null)
 		{
 			xmlDoc = documentToParse;
 		}
 		else
 		{
-			xmlDoc = XDocument.Load(_xmlFilePath);
+			try
+			{
+                xmlDoc = XDocument.Load(_xmlFilePath);
+			}
+			catch
+			{
+				Debug.LogError("Cant load XML file!");
+			}
+			
 		}
 
 		if (xmlDoc == null)
