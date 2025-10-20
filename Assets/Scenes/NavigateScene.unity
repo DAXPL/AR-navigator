@@ -542,6 +542,7 @@ GameObject:
   m_Component:
   - component: {fileID: 595971758}
   - component: {fileID: 595971759}
+  - component: {fileID: 595971760}
   m_Layer: 5
   m_Name: Greeting Prompt
   m_TagString: Untagged
@@ -605,18 +606,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 595971757}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+--- !u!225 &595971760
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 595971757}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &605416179
 GameObject:
   m_ObjectHideFlags: 0
@@ -1942,6 +1943,7 @@ MonoBehaviour:
   m_RepeatRate: 0.1
   m_TrackedDeviceDragThresholdMultiplier: 2
   m_TrackedScrollDeltaMultiplier: 5
+  m_BypassUIToolkitEvents: 0
   m_ActiveInputMode: 1
   m_EnableXRInput: 1
   m_EnableMouseInput: 1
@@ -3885,6 +3887,7 @@ GameObject:
   - component: {fileID: 2099970467}
   - component: {fileID: 2099970466}
   - component: {fileID: 2099970470}
+  - component: {fileID: 2099970471}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -3998,6 +4001,28 @@ MonoBehaviour:
   selectPanel: {fileID: 1024622695}
   optionsButton: {fileID: 1520419810}
   wheelchairToggle: {fileID: 128736113}
+--- !u!95 &2099970471
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099970465}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7d52209576e20c946a05f02ae35ca818, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &769660191955069549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4872,7 +4897,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 595971759}
         m_TargetAssemblyTypeName: PanelFlow, Assembly-CSharp
-        m_MethodName: FlowOut
+        m_MethodName: InvokeFlowOutEvent
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4880,6 +4905,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2099970471}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: ShowWelcomeCanvas
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &6050000885709302147
