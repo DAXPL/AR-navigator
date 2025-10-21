@@ -1,12 +1,12 @@
+using System;
+using TMPro;
+using Unity.XR.CoreUtils.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
-using UnityEngine.XR.ARSubsystems;
-using TMPro;
 
 public class EditNode : MonoBehaviour
 {
-    [Header("References")]
     [SerializeField] private ARTrackedImageManager m_TrackedImageManager;
     [SerializeField] private TMP_InputField nameInput;
     [SerializeField] private TextMeshProUGUI positionText;
@@ -22,33 +22,33 @@ public class EditNode : MonoBehaviour
 
     private void Update()
     {
-        UpdateNodeReferences(m_TrackedImageManager.trackables);
+        ContinousUpdateNodesReferences(m_TrackedImageManager.trackables);
+
         relPos = relativePoint - userCamera.position;
-        positionText.SetText($"{relPos.x:n2} \n{relPos.y:n2} \n{relPos.z:n2}");
+
+        positionText.SetText(
+            $"{relPos.x.ToString("n2")} \n {relPos.y.ToString("n2")} \n {relPos.z.ToString("n2")}"
+        );
     }
 
-    public void AddConnectionToSelectedNode()
+    public void AddConnectionToSeletedNode()
     {
         XMLParser parser = MeasureManger.parser;
-        if (parser == null || pointer >= parser.NodeList.Count)
-            return;
+        if (parser == null) return;
+        if (pointer >= parser.NodeList.Count) return;
 
         Vector3 relPos = userCamera.position - relativePoint;
 
-        // Apply mirroring based on toggles
-        if (Toggles.Length > 0 && Toggles[0].isOn) relPos.x = -relPos.x;
-        if (Toggles.Length > 1 && Toggles[1].isOn) relPos.y = -relPos.y;
-        if (Toggles.Length > 2 && Toggles[2].isOn) relPos.z = -relPos.z;
+        if (Toggles.Length > 0 && Toggles[0].isOn) relPos.x = -relPos.x; // Mirror X
+        if (Toggles.Length > 1 && Toggles[1].isOn) relPos.y = -relPos.y; // Mirror Y
+        if (Toggles.Length > 2 && Toggles[2].isOn) relPos.z = -relPos.z; // Mirror Z
 
-        // Add connection to the selected node
         parser.NodeList[pointer].AddConnection(newNodeName, relPos);
 
-        // Create new node and connect back
         Node newNode = new Node(newNodeName);
         newNode.AddConnection(parser.NodeList[pointer].Name, -relPos);
         parser.NodeList.Add(newNode);
 
-        // Reset input field
         nameInput.Select();
         nameInput.text = "";
     }
@@ -58,7 +58,7 @@ public class EditNode : MonoBehaviour
         newNodeName = newName;
     }
 
-    private void UpdateNodeReferences(TrackableCollection<ARTrackedImage> images)
+    private void ContinousUpdateNodesReferences(TrackableCollection<ARTrackedImage> images)
     {
         XMLParser parser = MeasureManger.parser;
         if (parser == null)
@@ -69,7 +69,7 @@ public class EditNode : MonoBehaviour
 
         foreach (var image in images)
         {
-            if (image.trackingState != TrackingState.Tracking)
+            if (image.trackingState != UnityEngine.XR.ARSubsystems.TrackingState.Tracking)
                 continue;
 
             for (int i = 0; i < parser.NodeList.Count; i++)
