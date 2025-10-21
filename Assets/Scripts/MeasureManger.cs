@@ -13,7 +13,9 @@ public class MeasureManger : MonoBehaviour
     private string dataPath;
     [SerializeField] private TextMeshProUGUI nodesOutput;
     [SerializeField] private TextMeshProUGUI debugOutput;
+    [SerializeField] private TextMeshProUGUI debugPos;
     [SerializeField] private GameObject[] cubes;
+    [SerializeField] private GameObject cam;
 
     void Start()
     {
@@ -24,6 +26,10 @@ public class MeasureManger : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (debugPos && cam)
+        {
+            debugPos.SetText($"{cam.transform.position}\n{cam.transform.rotation}");
+        }
         if (parser == null) 
         {
             nodesOutput.SetText("No parser");

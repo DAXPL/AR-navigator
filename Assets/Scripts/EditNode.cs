@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using Unity.XR.CoreUtils.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 
 public class EditNode : MonoBehaviour
@@ -12,22 +13,11 @@ public class EditNode : MonoBehaviour
     [SerializeField] private TextMeshProUGUI currentNodeText;
     [SerializeField] private Transform userCamera;
     [SerializeField] private GameObject cube;
+    [SerializeField] private Toggle[] Toggles;
     private string newNodeName = "";
     private int pointer = 0;
     private Vector3 relativePoint = Vector3.zero;
-    Vector3 relPos = Vector3.zero;//relative position
-
-    private void OnEnable()
-    {
-        pointer = 0;
-        //m_TrackedImageManager.trackablesChanged.AddListener(OnImageChanged);
-        
-    }
-    
-    private void OnDisable()
-    {
-        //m_TrackedImageManager.trackablesChanged.RemoveListener(OnImageChanged);
-    }
+    Vector3 relPos = Vector3.zero;
 
     private void Update()
     {
@@ -40,14 +30,21 @@ public class EditNode : MonoBehaviour
     {
         XMLParser parser = MeasureManger.parser;
         if (parser == null) return;
-
         if (pointer >= parser.NodeList.Count) return;
-        relPos =  userCamera.position - relativePoint;
-        parser.NodeList[pointer].AddConnection(newNodeName, new Vector3(relPos.x, relPos.y, relPos.z));
 
-        Vector3 relPosSecond = relativePoint - userCamera.position;
+        // oblicz relatywny wektor
+        Vector3 relPos = userCamera.position - relativePoint;
+
+        if (Toggles.Length > 0 && Toggles[0].isOn) relPos.x = -relPos.x; // Mirror X
+        if (Toggles.Length > 1 && Toggles[1].isOn) relPos.y = -relPos.y; // Mirror Y
+        if (Toggles.Length > 2 && Toggles[2].isOn) relPos.z = -relPos.z; // Mirror Z
+
+        // dodaj relacjê
+        parser.NodeList[pointer].AddConnection(newNodeName, relPos);
+
+        // odwrotna relacja
         Node newNode = new Node(newNodeName);
-        newNode.AddConnection(parser.NodeList[pointer].Name, new Vector3(relPosSecond.x, relPosSecond.y, relPosSecond.z));
+        newNode.AddConnection(parser.NodeList[pointer].Name, -relPos);
         parser.NodeList.Add(newNode);
 
         nameInput.Select();
@@ -57,12 +54,6 @@ public class EditNode : MonoBehaviour
     public void OnNameChanged(string newName)
     {
         newNodeName = newName;
-    }
-
-    public void OnImageChanged(ARTrackablesChangedEventArgs<ARTrackedImage> eventArgs)
-    {
-        //UpdateNodesReferences(eventArgs.added);
-        //UpdateNodesReferences(eventArgs.updated);
     }
    
     private void ContinousUpdateNodesReferences(TrackableCollection<ARTrackedImage> images)

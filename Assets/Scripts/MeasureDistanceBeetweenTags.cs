@@ -16,7 +16,7 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
     [SerializeField] private GameObject endIndicator;
 
     [SerializeField] private Button saveButton;
-
+    [SerializeField] private Toggle[] Toggles;
     [SerializeField] private TextMeshProUGUI referenceNodeText;
     [SerializeField] private TextMeshProUGUI targetNodeText;
     [SerializeField] private TextMeshProUGUI distanceText;
@@ -149,8 +149,14 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
 
         if(start == null || end == null) return;
 
-        start.AddConnection(targetNode.nodeName, endIndicator.transform.position - startIndicator.transform.position);
-        end.AddConnection(referenceNode.nodeName, startIndicator.transform.position - endIndicator.transform.position);
+        Vector3 rel = endIndicator.transform.position - startIndicator.transform.position;
+
+        if (Toggles.Length > 0 && Toggles[0].isOn) rel.x = -rel.x; // Mirror X
+        if (Toggles.Length > 1 && Toggles[1].isOn) rel.y = -rel.y; // Mirror Y
+        if (Toggles.Length > 2 && Toggles[2].isOn) rel.z = -rel.z; // Mirror Z
+
+        start.AddConnection(targetNode.nodeName, rel);
+        end.AddConnection(referenceNode.nodeName, -rel);
 
     }
 }

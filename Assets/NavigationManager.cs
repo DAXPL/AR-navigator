@@ -63,7 +63,7 @@ public class NavigationManager : MonoBehaviour
     {
         if(!isTraveling) return;
         if(lineRenderer.positionCount>0) lineRenderer.SetPosition(0, userCamera.transform.position - Vector3.up);
-        if (Vector3.Distance(userCamera.position, destinationPosition) < 1)
+        if (Vector3.Distance(userCamera.position, destinationPosition) <= 0.1)
         {
             if(searchDestinationUI)searchDestinationUI.SetAnimatorBooleanValue("ShowArrivalInfo", true);
         } 
@@ -132,6 +132,7 @@ public class NavigationManager : MonoBehaviour
 
         if (lastTrackedPoint != "") DrawPath(path);
         else if (searchDestinationUI) searchDestinationUI.SetAnimatorBooleanValue("ShowScanEnviroUI", true);
+        if (searchDestinationUI) searchDestinationUI.SetAnimatorBooleanValue("ShowDestinationSelector", false);
     }
     
     //update on scan or when close enough
@@ -178,5 +179,10 @@ public class NavigationManager : MonoBehaviour
         isTraveling = false;
         lineRenderer.positionCount = 0;
         destinationPosition = Vector3.zero;
+        if (searchDestinationUI) 
+        {
+            searchDestinationUI.SetAnimatorBooleanValue("ShowArrivalInfo", false);
+            searchDestinationUI.SetAnimatorBooleanValue("ShowOptions", true); 
+        }
     }
 }
