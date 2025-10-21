@@ -50,7 +50,6 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
 
     private void UpdateNodesReferences(ReadOnlyList<ARTrackedImage> images, bool first = false)
     {
-        // Reset referenceNode if it's not locked
         if (!referenceLocked) referenceNode = null;
         targetNode=null;
 
@@ -68,6 +67,7 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
                 {
                     referenceNode = new NodeData(imageID, imageID);
                     startIndicator.transform.position = newImage.transform.position;
+                    startIndicator.transform.rotation = newImage.transform.rotation;
                     startIndicator.SetActive(true);
                 }
             }
@@ -77,6 +77,7 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
                 // Set the target node if reference is locked
                 targetNode = new NodeData(imageID, imageID);
                 endIndicator.transform.position = newImage.transform.position;
+                endIndicator.transform.rotation = newImage.transform.rotation;
                 endIndicator.SetActive(true);
             }
         }
@@ -103,8 +104,7 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
     {
         saveButton.interactable = (referenceNode!=null && targetNode!=null);
 
-        XMLParser parser = MeasureManger.parser;
-        if (parser == null) return;
+        if (MeasureManger.parser == null) return;
 
         startIndicator.SetActive(referenceNode!=null);
         endIndicator.SetActive(targetNode!=null);

@@ -163,83 +163,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ced9d6c05d9539745b5fac2ddb854a6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xmlFile: {fileID: 4900000, guid: 2c05ad605ade59c4ab1b19c6f8dd86d2, type: 3}
-  scale: 0.01
-  nodeSphereRadius: 0
-  anchorColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  roomColor: {r: 0, g: 1, b: 1, a: 1}
+  xmlFile: {fileID: 4900000, guid: c249e7da555ebc34da03ad2f60ba46f0, type: 3}
   lineColor: {r: 1, g: 1, b: 1, a: 1}
-  drawLabels: 1
-  labelStyle:
-    m_Name: 
-    m_Normal:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 1, g: 1, b: 1, a: 1}
-    m_Hover:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_Active:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_Focused:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_OnNormal:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_OnHover:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_OnActive:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_OnFocused:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_Border:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Margin:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Padding:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Overflow:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Font: {fileID: 0}
-    m_FontSize: 12
-    m_FontStyle: 0
-    m_Alignment: 0
-    m_WordWrap: 0
-    m_RichText: 1
-    m_TextClipping: 0
-    m_ImagePosition: 0
-    m_ContentOffset: {x: 0, y: 0}
-    m_FixedWidth: 0
-    m_FixedHeight: 0
-    m_StretchWidth: 1
-    m_StretchHeight: 0
-  flipX: 0
-  flipY: 0
-  flipZ: 0
+  mainNodeColor: {r: 0, g: 1, b: 1, a: 1}
+  subNodeColor: {r: 0, g: 1, b: 0, a: 1}
+  nodeRadius: 0
 --- !u!1 &1536631971
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,7 +184,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1536631972
 SpriteRenderer:
   m_ObjectHideFlags: 0

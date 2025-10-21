@@ -1,0 +1,70 @@
+﻿<ArrayOfNode>
+  <Node>
+    <Name>5</Name>
+    <isTracked>false</isTracked>
+    <TagId>5</TagId>
+    <ConnectedNodes>
+      <NodeConnection>
+        <To>0</To>
+        <IsWheelchairAccessible>true</IsWheelchairAccessible>
+        <Relative_x>-0.450000018</Relative_x>
+        <Relative_y>0</Relative_y>
+        <Relative_z>3.435</Relative_z>
+      </NodeConnection>
+      <NodeConnection>
+        <To>Pokoj 2</To>
+        <IsWheelchairAccessible>true</IsWheelchairAccessible>
+        <Relative_x>-1.95865679</Relative_x>
+        <Relative_y>1.48762357</Relative_y>
+        <Relative_z>-1.51565123</Relative_z>
+      </NodeConnection>
+    </ConnectedNodes>
+  </Node>
+  <Node>
+    <Name>0</Name>
+    <isTracked>false</isTracked>
+    <TagId>0</TagId>
+    <ConnectedNodes>
+      <NodeConnection>
+        <To>5</To>
+        <IsWheelchairAccessible>true</IsWheelchairAccessible>
+        <Relative_x>0.450000018</Relative_x>
+        <Relative_y>-0</Relative_y>
+        <Relative_z>-3.435</Relative_z>
+      </NodeConnection>
+      <NodeConnection>
+        <To>Pokoj 1</To>
+        <IsWheelchairAccessible>true</IsWheelchairAccessible>
+        <Relative_x>3.11457372</Relative_x>
+        <Relative_y>-0.225990415</Relative_y>
+        <Relative_z>1.43972826</Relative_z>
+      </NodeConnection>
+    </ConnectedNodes>
+  </Node>
+  <Node>
+    <Name>Pokoj 1</Name>
+    <isTracked>false</isTracked>
+    <ConnectedNodes>
+      <NodeConnection>
+        <To>0</To>
+        <IsWheelchairAccessible>true</IsWheelchairAccessible>
+        <Relative_x>-3.11457372</Relative_x>
+        <Relative_y>0.225990415</Relative_y>
+        <Relative_z>-1.43972826</Relative_z>
+      </NodeConnection>
+    </ConnectedNodes>
+  </Node>
+  <Node>
+    <Name>Pokoj 2</Name>
+    <isTracked>false</isTracked>
+    <ConnectedNodes>
+      <NodeConnection>
+        <To>5</To>
+        <IsWheelchairAccessible>true</IsWheelchairAccessible>
+        <Relative_x>1.95865679</Relative_x>
+        <Relative_y>-1.48762357</Relative_y>
+        <Relative_z>1.51565123</Relative_z>
+      </NodeConnection>
+    </ConnectedNodes>
+  </Node>
+</ArrayOfNode>
