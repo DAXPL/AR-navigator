@@ -121,43 +121,42 @@ public class MeasureDistanceBeetweenTags : MonoBehaviour
 
     public void SaveConnection()
     {
-        if(referenceNode==null || targetNode==null)return;
+        if (referenceNode == null || targetNode == null) return;
         XMLParser parser = MeasureManger.parser;
         if (parser == null) return;
 
-
         Node start = null;
         Node end = null;
-        for (int i = 0; i < parser.NodeList.Count; i++) 
+        for (int i = 0; i < parser.NodeList.Count; i++)
         {
             Node node = parser.NodeList[i];
-            if(node.TagId == referenceNode.tagId) start = node;
-            if(node.TagId == targetNode.tagId) end = node;
-            if (start != null && end != null) break; 
+            if (node.TagId == referenceNode.tagId) start = node;
+            if (node.TagId == targetNode.tagId) end = node;
+            if (start != null && end != null) break;
         }
 
-        if(start == null)
+        if (start == null)
         {
-            parser.NodeList.Add(new Node(referenceNode.nodeName,referenceNode.tagId));
+            parser.NodeList.Add(new Node(referenceNode.nodeName, referenceNode.tagId));
             start = parser.NodeList[parser.NodeList.Count - 1];
         }
-        if (end == null) 
+        if (end == null)
         {
             parser.NodeList.Add(new Node(targetNode.nodeName, targetNode.tagId));
             end = parser.NodeList[parser.NodeList.Count - 1];
         }
 
-        if(start == null || end == null) return;
+        if (start == null || end == null) return;
 
         Vector3 rel = endIndicator.transform.position - startIndicator.transform.position;
 
-        if (Toggles.Length > 0 && Toggles[0].isOn) rel.x = -rel.x; // Mirror X
-        if (Toggles.Length > 1 && Toggles[1].isOn) rel.y = -rel.y; // Mirror Y
-        if (Toggles.Length > 2 && Toggles[2].isOn) rel.z = -rel.z; // Mirror Z
+        // Opcjonalne odbicia
+        if (Toggles.Length > 0 && Toggles[0].isOn) rel.x = -rel.x;
+        if (Toggles.Length > 1 && Toggles[1].isOn) rel.y = -rel.y;
+        if (Toggles.Length > 2 && Toggles[2].isOn) rel.z = -rel.z;
 
         start.AddConnection(targetNode.nodeName, rel);
         end.AddConnection(referenceNode.nodeName, -rel);
-
     }
 }
 public class NodeData
